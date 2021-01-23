@@ -9,14 +9,14 @@ script:
   - docker run -e CI=true learning/react-ui-dev npm run test -- --coverage
 
 after_success:
-  - docker build -t learning-multi-container/react-ui ./react-ui
-  - docker build -t learning-multi-container/backend-server ./express-server
-  - docker build -t learning-multi-container/nginx ./nginx
-  - docker build -t learning-multi-container/worker ./worker
+  - docker build -t mhnvelu/multi-container-react-ui ./react-ui
+  - docker build -t mhnvelu/multi-container-backend-server ./express-server
+  - docker build -t mhnvelu/multi-container-nginx ./nginx
+  - docker build -t mhnvelu/multi-container-worker ./worker
   ## Login to Docker Hub CLI and push the images
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   ## Take those images and push to Docker Hub
-  - docker push learning-multi-container/react-ui
-  - docker push learning-multi-container/backend-server
-  - docker push learning-multi-container/nginx
-  - docker push learning-multi-container/worker
+  - docker push mhnvelu/multi-container-react-ui
+  - docker push mhnvelu/multi-container-backend-server
+  - docker push mhnvelu/multi-container-nginx
+  - docker push mhnvelu/multi-container-worker
