@@ -1,0 +1,58 @@
+version: "3"
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - ui
+      - backend-server
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+    ports:
+      - 5432:5432
+  cache:
+    image: redis:latest
+  backend-server:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./express-server
+    volumes:
+      - /usr/app/node_modules
+      - ./express-server:/usr/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGHOST=db
+      - PGPORT=5432
+    depends_on:
+      - db
+  ui:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./react-ui
+    volumes:
+      - /usr/app/node_modules
+      - ./react-ui:/usr/app
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /usr/app/node_modules
+      - ./worker:/usr/app
+    environment:
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+    depends_on:
+      - cache
