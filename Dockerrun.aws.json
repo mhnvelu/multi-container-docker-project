@@ -4,25 +4,29 @@
             "name": "docker-react-ui",
             "image": "mhnvelu/multi-container-react-ui",
             "hostname": "ui",
-            "essential": false
+            "essential": false,
+            "memory": 128
         },
         {
             "name": "docker-express-server",
             "image": "mhnvelu/multi-container-backend-server",
             "hostname": "backend-server",
-            "essential": false
+            "essential": false,
+            "memory": 128
         },
         {
             "name": "docker-worker",
             "image": "mhnvelu/multi-container-worker",
             "hostname": "worker",
-            "essential": false
+            "essential": false,
+            "memory": 128
         },
         {
             "name": "docker-proxy",
             "image": "mhnvelu/multi-container-nginx",
             "hostname": "proxy-server",
             "essential": true,
+            "memory": 128,
             "portMappings": [{
                 "hostPort": 8080,
                 "containerPort": 80
