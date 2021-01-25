@@ -1,0 +1,37 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [{
+            "name": "docker-react-ui",
+            "image": "mhnvelu/multi-container-react-ui",
+            "hostname": "ui",
+            "essential": false
+        },
+        {
+            "name": "docker-express-server",
+            "image": "mhnvelu/multi-container-backend-server",
+            "hostname": "backend-server",
+            "essential": false
+        },
+        {
+            "name": "docker-worker",
+            "image": "mhnvelu/multi-container-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "docker-proxy",
+            "image": "mhnvelu/multi-container-nginx",
+            "hostname": "proxy-server",
+            "essential": true,
+            "portMappings": [{
+                "hostPort": 8080,
+                "containerPort": 80
+            }],
+            "links": [
+                "docker-react-ui",
+                "docker-express-server"
+            ]
+        }
+
+    ]
+}
